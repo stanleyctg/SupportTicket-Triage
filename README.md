@@ -3,7 +3,7 @@
 Reads a CSV of support tickets and produces two outputs:
 
 1. **Per-ticket CSV**: suggested priority, category/subcategory, recurrence flag, and a human-readable explanation for each ticket
-2. **Console dashboard**: volume by category, open/escalated backlog by priority, open tickets missing an agent assignment, top recurring-customer hotspots, and a full per-ticket summary table
+2. **Console dashboard**: volume by category, open/escalated backlog by priority, open tickets missing an agent assignment, top recurring-customer hotspots, and a satisfaction pattern
 
 ## Setup
 
@@ -14,7 +14,7 @@ pip install -r requirements.txt
 Two dependencies: `rake-nltk` (keyword extraction) and `nltk` (tokenisation). NLTK corpora are downloaded automatically on first run.
 
 ## Usage
-
+Run:
 ```bash
 python triage.py <path_to_csv>
 ```
