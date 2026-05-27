@@ -14,7 +14,7 @@ pip install -r requirements.txt
 Two dependencies: `rake-nltk` (keyword extraction) and `nltk` (tokenisation). NLTK corpora are downloaded automatically on first run.
 
 ## Usage
-
+Run:
 ```bash
 python triage.py <path_to_csv>
 ```
