@@ -49,75 +49,15 @@ One row per ticket with these columns:
 | `linked_tickets` | comma-separated TKT-NNN IDs found in the description |
 | `explanation` | one-line summary a manager can act on directly |
 
+<img width="1187" height="643" alt="image" src="https://github.com/user-attachments/assets/3c419a7d-07df-4a91-8588-aad67bcc1a4e" />
+
+
 ## Output 2 — console dashboard
 
 Printed to stdout alongside the CSV write. Chosen over HTML/markdown because it requires no browser and reads well in a terminal or CI log.
 
-```
-Loaded 50 tickets from support_tickets.csv
+<img width="821" height="711" alt="image" src="https://github.com/user-attachments/assets/9736674f-1d1a-495a-9e99-6ceeec1655cf" />
 
-========================================================================
-  SUPPORT TRIAGE TOOL
-========================================================================
-
-  50 tickets processed
-  13 recurrence flags
-  15 priorities inferred  |  3 categories inferred
-
-  VOLUME BY CATEGORY
-  --------------------------------------------------
-  Model Output        20   ████████████████████
-  Integration         11   ███████████
-  Performance          7   ███████
-  Billing              5   █████
-  Safety               3   ███
-  Onboarding           3   ███
-  Account              1   █
-
-  OPEN / ESCALATED BACKLOG
-  --------------------------------------------------
-  Critical    2   TKT-037, TKT-048
-  High       16   TKT-006, TKT-007, TKT-014, TKT-017, TKT-019, TKT-021…
-
-  RECURRING CUSTOMER HOTSPOTS
-  --------------------------------------------------
-  CUST-1155   4 recurring ticket(s)
-  CUST-2234   2 recurring ticket(s)
-  CUST-3310   2 recurring ticket(s)
-  CUST-8801   2 recurring ticket(s)
-  CUST-4421   2 recurring ticket(s)
-
-  OPEN / ESCALATED — NO AGENT ASSIGNED
-  --------------------------------------------------
-  TKT-006   CUST-5502    High       Integration        Open
-  TKT-014   CUST-8801    High       Model Output       Open
-  ...
-
-  PER-TICKET TRIAGE
-  ----------------------------------------------------------------------
-  ID        Customer     Priority   Category           Recur  Status
-  ----------------------------------------------------------------------
-  TKT-001   CUST-4421    High       Model Output              Resolved
-  TKT-002   CUST-2891    High       Integration               Resolved
-  TKT-003   CUST-3310    Low        Billing                   Resolved
-  ...
-  TKT-037   CUST-2234    Critical   Model Output       YES    Escalated
-  TKT-048   CUST-1155    Critical   Model Output       YES    Escalated
-
-========================================================================
-
-  Output written to output/triage_results.csv
-```
-
-Sample rows from `output/triage_results.csv`:
-
-```
-ticket_id,suggested_priority,priority_source,suggested_category,suggested_subcategory,category_source,recurrence_flag,linked_tickets,explanation
-TKT-001,High,original,Model Output,Hallucination,original,no,,TKT-001 [2024-01-03] | CUST-4421 | Priority: High | Category: Model Output / Hallucination | Status: Resolved | No prior history from this customer
-TKT-002,High,inferred,Integration,API Timeout,original,no,,TKT-002 [2024-01-04] | CUST-2891 | Priority: High | Category: Integration / API Timeout | Status: Resolved | No prior history from this customer
-TKT-037,Critical,inferred,Model Output,Inconsistency,original,yes,"TKT-007, TKT-021",TKT-037 [2024-04-18] | CUST-2234 | Priority: Critical | Category: Model Output / Inconsistency | Status: Escalated | Recurrence: 2 prior tickets from this customer (linked: TKT-007, TKT-021)
-TKT-048,Critical,inferred,Model Output,Hallucination,original,yes,"TKT-005, TKT-011, TKT-019, TKT-034",TKT-048 [2024-05-09] | CUST-1155 | Priority: Critical | Category: Model Output / Hallucination | Status: Escalated | Recurrence: 4 prior tickets from this customer (linked: TKT-005, TKT-011, TKT-019, TKT-034)
-```
 
 ## How priority is inferred
 
