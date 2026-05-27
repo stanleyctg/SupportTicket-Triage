@@ -174,7 +174,7 @@ TAXONOMY: dict = {
 PRIORITY_ORDER: list = ["Low", "Medium", "High", "Critical"]
 
 # Recurrence: bump priority up one level when prior ticket count hits this
-RECURRENCE_BUMP_THRESHOLD: int = 3
+RECURRENCE_BUMP_THRESHOLD: int = 2
 
 # Urgency signals that override the inferred priority upward.
 # Checked after base priority and recurrence bump are applied.

@@ -124,7 +124,7 @@ TKT-048,Critical,inferred,Model Output,Hallucination,original,yes,"TKT-005, TKT-
 When the `priority` field is blank or unrecognised, the tool applies these rules in order (each layer can only raise priority, never lower it):
 
 1. Base priority from subcategory taxonomy (defined in `taxonomy.py`)
-2. Bump one level if the customer has ≥ 3 prior tickets in the file
+2. Bump one level if the customer has ≥ 2 prior tickets in the file
 3. `Escalated` status floors the priority at `High`
 4. Critical signals in the description (legal, formal complaint, SLA) → `Critical`
 5. High signals (threatening to cancel, going live, completely unusable) → floor at `High`

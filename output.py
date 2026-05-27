@@ -129,7 +129,7 @@ def print_summary(tickets: list) -> None:
     for p in ["Critical", "High", "Medium", "Low"]:
         ids = backlog.get(p, [])
         if ids:
-            id_str = ", ".join(ids[:6]) + ("…" if len(ids) > 6 else "")
+            id_str = ", ".join(ids)
             print(f"  {p:<10} {len(ids):>2}   {id_str}")
 
     if cust_recur:
@@ -154,22 +154,38 @@ def print_summary(tickets: list) -> None:
             status = (t.get("status")       or "").strip()
             print(f"  {tid:<9} {cust:<12} {prio:<10} {cat:<18} {status}")
 
-    print()
-    print("  PER-TICKET TRIAGE")
-    print("  " + "-" * 70)
-    print(f"  {'ID':<9} {'Customer':<12} {'Priority':<10} {'Category':<18} {'Recur':<6} {'Status'}")
-    print("  " + "-" * 70)
+    scores_all: list = []
+    cat_scores: dict = defaultdict(list)
+    score_dist: dict = defaultdict(int)
     for t in tickets:
-        recur  = "YES" if t["_recurrence"] else ""
-        status = (t.get("status") or "").strip()
-        cat    = t["_category"][:16]
-        print(
-            f"  {(t.get('ticket_id') or ''):<9} "
-            f"{(t.get('customer_id') or ''):<12} "
-            f"{t['_priority']:<10} "
-            f"{cat:<18} "
-            f"{recur:<6} "
-            f"{status}"
-        )
+        raw = (t.get("satisfaction_score") or "").strip()
+        try:
+            score = float(raw)
+            if 1 <= score <= 5:
+                scores_all.append(score)
+                cat_scores[t["_category"]].append(score)
+                score_dist[int(score)] += 1
+        except ValueError:
+            pass
+
+    if scores_all:
+        overall_avg = sum(scores_all) / len(scores_all)
+        print()
+        print("  SATISFACTION PATTERNS")
+        print("  " + "-" * 50)
+        print(f"  Overall avg: {overall_avg:.1f} / 5   ({len(scores_all)} rated tickets)\n")
+        print(f"  {'By category (worst first)':<22} {'Avg':>5}")
+        for cat, s in sorted(cat_scores.items(), key=lambda x: sum(x[1]) / len(x[1])):
+            avg = sum(s) / len(s)
+            filled = round(avg * 2)
+            bar = "█" * filled + "░" * (10 - filled)
+            print(f"  {cat:<22} {avg:>4.1f}   {bar}")
+        print()
+        print("  Score distribution")
+        max_dist = max(score_dist.values()) if score_dist else 1
+        for star in range(1, 6):
+            count = score_dist.get(star, 0)
+            bar = "█" * max(0, round(count / max_dist * 20))
+            print(f"  {star} ★   {bar:<20}  {count}")
 
     print("\n" + "=" * 72 + "\n")
