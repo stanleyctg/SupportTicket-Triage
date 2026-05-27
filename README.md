@@ -13,26 +13,13 @@ pip install -r requirements.txt
 
 Two dependencies: `rake-nltk` (keyword extraction) and `nltk` (tokenisation). NLTK corpora are downloaded automatically on first run.
 
-## Usage
+## Sample Usage
 Run:
 ```bash
 python triage.py <path_to_csv>
 ```
 
-The tool accepts any CSV with these columns (all present in `support_tickets.csv`):
-
-| Column | Notes |
-|---|---|
-| `ticket_id` | e.g. `TKT-001` |
-| `date_submitted` | `YYYY-MM-DD` |
-| `customer_id` | e.g. `CUST-4421` |
-| `category` | may be blank — inferred from description |
-| `subcategory` | may be blank — inferred from description |
-| `priority` | may be blank — inferred from category + subcategory + signals |
-| `status` | `Open`, `Resolved`, `Escalated` |
-| `agent_assigned` | optional; if blank and status is Open/Escalated, ticket appears in the unassigned section |
-| `ticket_description` | free-text description used for inference |
-| `resolution_notes` | optional; improves category matching |
+The tool accepts the CSV file (`support_tickets.csv`) and produces 2 outputs:
 
 ## Output 1 — per-ticket CSV (`output/triage_results.csv`)
 
