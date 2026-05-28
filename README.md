@@ -46,7 +46,7 @@ Printed to stdout alongside the CSV write. Chosen over HTML/markdown because it 
 <img width="821" height="711" alt="image" src="https://github.com/user-attachments/assets/9736674f-1d1a-495a-9e99-6ceeec1655cf" />
 
 
-## How each field is produced
+## How each field is produced in Output 1
 
 **Priority**
 
@@ -72,9 +72,11 @@ Looking at the dataset, customers who are following up on an earlier ticket almo
 
 Produced is a recurrence flag and the linked tickets.
 
-**Explanation**
+**Single Line Explanation**
 
 No inference here: the explanation is assembled directly from structured fields: ticket ID, customer, the suggested labels, any linked prior tickets, and current status. The goal is a single line a manager can read without opening the original ticket.
+
+## What is included in Dashboard for output 2
 
 **Dashboard**
 
