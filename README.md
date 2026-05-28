@@ -46,15 +46,35 @@ Printed to stdout alongside the CSV write. Chosen over HTML/markdown because it 
 <img width="821" height="711" alt="image" src="https://github.com/user-attachments/assets/9736674f-1d1a-495a-9e99-6ceeec1655cf" />
 
 
-## How priority is inferred
+## How each field is produced
 
-When the `priority` field is blank or unrecognised, the tool applies these rules in order (each layer can only raise priority, never lower it):
+**Priority**
 
-1. Base priority from subcategory taxonomy (defined in `taxonomy.py`)
+Looking at the data, tickets in the same subcategory almost always cluster at similar urgency level: so subcategory is the most reliable starting signal. Resolution time has a loose correlation with priority but too many outliers to trust directly. On top of that base, the text of the description often contains explicit urgency cues ("legal", "going live", "threatening to cancel") that clearly warrant bumping the level. Recurrence is also a signal: a customer raising the same issue for the third time is implicitly higher priority than a first report.
+
+If the CSV already has a valid priority it is kept as-is (`priority_source: original`). When blank, the tool infers it in layers (each layer can only raise, never lower):
+
+1. Base level from the subcategory taxonomy (`taxonomy.py`)
 2. Bump one level if the customer has ≥ 2 prior tickets in the file
-3. `Escalated` status floors the priority at `High`
-4. Critical signals in the description (legal, formal complaint, SLA) → `Critical`
-5. High signals (threatening to cancel, going live, completely unusable) → floor at `High`
+3. `Escalated` status floors at `High`
+4. Critical signals in the description ("legal", "formal complaint", "SLA") → `Critical`
+5. High signals ("threatening to cancel", "going live", "completely unusable") → floor at `High`
+
+**Category / subcategory**
+
+Ticket descriptions in this domain contain very obvious keywords: "API", "hallucination", "webhook", "billing", that map directly to a small, stable taxonomy. RAKE extracts multi-word key phrases from the description (better than single words for terms like "content filter" or "overage charges"), scores them against keyword lists for each category/subcategory, and takes the highest-scoring match. If the CSV already has a valid category it is kept and only a missing subcategory is inferred.
+
+Missing category/subcategory will be filled based on the above.
+
+**Recurrence**
+
+Looking at the dataset, customers who are following up on an earlier ticket almost always name it explicitly in the description ("see TKT-017", "follow up to TKT-005"). A regex on the `TKT-NNN` pattern reliably catches these. The same-customer check is essential, a ticket description can mention someone else's ticket number, and that is not a recurrence.
+
+Produced is a recurrence flag and the linked tickets.
+
+**Explanation**
+
+No inference here: the explanation is assembled directly from structured fields: ticket ID, customer, the suggested labels, any linked prior tickets, and current status. The goal is a single line a manager can read without opening the original ticket.
 
 ## Project structure
 
