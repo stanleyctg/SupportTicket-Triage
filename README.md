@@ -76,6 +76,12 @@ Produced is a recurrence flag and the linked tickets.
 
 No inference here: the explanation is assembled directly from structured fields: ticket ID, customer, the suggested labels, any linked prior tickets, and current status. The goal is a single line a manager can read without opening the original ticket.
 
+**Dashboard**
+
+All stats are derived from the same enriched ticket list that feeds the CSV. Five views were chosen based on what the data made obvious: category volume (where load concentrates), open/escalated backlog by priority (what needs action today), unassigned open tickets (spotted that agent_assigned is consistently blank on unresolved tickets: a gap worth surfacing), recurring customer hotspots (accounts most likely to churn), and satisfaction by category (which issue types leave customers unhappiest).
+
+Console output was chosen for simplicity: no browser, no server, runs anywhere the script runs. At larger scale a dynamic app (e.g. Streamlit) or combining both outputs into a single HTML file would be more appropriate.
+
 ## Project structure
 
 ```
