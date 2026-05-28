@@ -60,15 +60,19 @@ If the CSV already has a valid priority it is kept as-is (`priority_source: orig
 4. Critical signals in the description ("legal", "formal complaint", "SLA") → `Critical`
 5. High signals ("threatening to cancel", "going live", "completely unusable") → floor at `High`
 
+Worth to note, the base level in taxonomy is derived from the majority priority label given a category/subcategory. However, this is done manually. If I had more time, a better solution would be doing this automatically by getting the maximum count of a priority label and building the taxonomy dictionary through an algorithm.
+
 **Category / subcategory**
 
 Ticket descriptions and resolution notes in this domain contain very obvious keywords: "API", "hallucination", "webhook", "billing", that explicitly map directly to a small, stable taxonomy. RAKE extracts multi-word key phrases from the description (better than single words for terms like "content filter" or "overage charges"), scores them against keyword lists for each category/subcategory, and takes the highest-scoring match. If the CSV already has a valid category it is kept and only a missing subcategory is inferred.
 
 Missing category/subcategory will be filled based on the above.
 
+Worth to note, because taxonomy is manually built. It will require a lot of upfront work for richer/larger dataset. Using a model to automatically extract keywords, normalising the vector and performing a similarity comparison with the existing ticket's description would be better at scale.
+
 **Recurrence**
 
-Looking at the dataset, customers who are following up on an earlier ticket almost always name it explicitly in the description ("see TKT-017", "follow up to TKT-005"). A regex on the `TKT-NNN` pattern reliably catches these. The same-customer check is essential, a ticket description can mention someone else's ticket number, and that is not a recurrence.
+Looking at the dataset, customers who are following up on an earlier ticket almost always name it explicitly in the description ("see TKT-017", "follow up to TKT-005"). A regex on the `TKT-NNN` pattern reliably catches these. The same-customer check is essential, a ticket description could mention someone else's ticket number, and that is not a recurrence. Hence a better solution in the future would be fine-tuning a BERT model and then performing a pairwise sequence classification task from the ticket's description/resolution notes to capture if both sentences are reference of each other.
 
 Produced is a recurrence flag and the linked tickets.
 
