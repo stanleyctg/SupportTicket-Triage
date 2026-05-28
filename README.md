@@ -62,7 +62,7 @@ If the CSV already has a valid priority it is kept as-is (`priority_source: orig
 
 **Category / subcategory**
 
-Ticket descriptions in this domain contain very obvious keywords: "API", "hallucination", "webhook", "billing", that map directly to a small, stable taxonomy. RAKE extracts multi-word key phrases from the description (better than single words for terms like "content filter" or "overage charges"), scores them against keyword lists for each category/subcategory, and takes the highest-scoring match. If the CSV already has a valid category it is kept and only a missing subcategory is inferred.
+Ticket descriptions and resolution notes in this domain contain very obvious keywords: "API", "hallucination", "webhook", "billing", that explicitly map directly to a small, stable taxonomy. RAKE extracts multi-word key phrases from the description (better than single words for terms like "content filter" or "overage charges"), scores them against keyword lists for each category/subcategory, and takes the highest-scoring match. If the CSV already has a valid category it is kept and only a missing subcategory is inferred.
 
 Missing category/subcategory will be filled based on the above.
 
