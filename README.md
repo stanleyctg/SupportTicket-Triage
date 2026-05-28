@@ -52,7 +52,7 @@ Printed to stdout alongside the CSV write. Chosen over HTML/markdown because it 
 
 Looking at the data, tickets in the same subcategory almost always cluster at similar urgency level: so subcategory is the most reliable starting signal. Resolution time has a loose correlation with priority but too many outliers to trust directly. On top of that base, the text of the description often contains explicit urgency cues ("legal", "going live", "threatening to cancel") that clearly warrant bumping the level. Recurrence is also a signal: a customer raising the same issue for the third time is implicitly higher priority than a first report.
 
-If the CSV already has a valid priority it is kept as-is (`priority_source: original`). When blank, the tool infers it in layers (each layer can only raise, never lower):
+If the CSV already has a valid priority it is kept as-is (`priority_source: original`). When blank, the tool infers it in layers (each layer can only raise, never lower), based on the information and data pattern given, a suggested priority label is produced as below:
 
 1. Base level from the subcategory taxonomy (`taxonomy.py`)
 2. Bump one level if the customer has ≥ 2 prior tickets in the file
